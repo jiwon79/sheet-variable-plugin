@@ -26,7 +26,11 @@
     "paths": {
       "@ui/*": ["./src/ui/*"],
       "@plugin/*": ["./src/plugin/*"]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
   },
   "include": ["src"]
 }

@@ -1,5 +1,5 @@
 export default {
-    name: "Figma-Plugin-React-Vite",
+    name: "Sheet sync with Variable",
     id: "1222852692367737510",
     api: "1.0.0",
     main: "plugin.js",
