@@ -1,10 +1,8 @@
-import path from "path";
 import { defineConfig } from "vite";
+import { resolve } from "path";
 import generateFile from "vite-plugin-generate-file";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import figmaManifest from "./figma.manifest";
-
-const __dirname = path.resolve();
 
 export default defineConfig({
   plugins: [
@@ -18,17 +16,17 @@ export default defineConfig({
   build: {
     lib: {
       name: figmaManifest.name,
-      entry: path.resolve(__dirname, "./src/plugin/plugin.ts"),
+      entry: resolve(__dirname, "./src/plugin/plugin.ts"),
       fileName: "plugin",
       formats: ["es"],
     },
     emptyOutDir: false,
-    outDir: path.resolve(__dirname, "./dist"),
+    outDir: resolve(__dirname, "./dist"),
   },
   resolve: {
     alias: {
-      "@common": path.resolve(__dirname, "./src/common"),
-      "@plugin": path.resolve(__dirname, "./src/plugin"),
+      "@common": resolve(__dirname, "./src/common"),
+      "@plugin": resolve(__dirname, "./src/plugin"),
     },
   },
 });

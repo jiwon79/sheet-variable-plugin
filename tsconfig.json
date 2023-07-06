@@ -30,7 +30,8 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"
-    ]
+    ],
+    "esModuleInterop": true
   },
   "include": ["src"]
 }
