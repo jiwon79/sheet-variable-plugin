@@ -75,6 +75,8 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
   console.log(modes);
   removeModes(collection);
   createModes(collection, modes);
+  const variables = getVariableFromData(data, modes);
+  console.log(variables);
   // modes.map((mode) => {
   //   collection.addMode(mode.toString());
   // })
@@ -84,7 +86,7 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:collectionName`, collectionName);
 }
 
-const getModesFromData = (data: String[][]): String[] => {
+const getModesFromData = (data: string[][]): string[] => {
   const header = data[0].slice(1);
   const headerIndex = header.findIndex((value) => value === "");
   if (headerIndex === -1) {
@@ -94,21 +96,30 @@ const getModesFromData = (data: String[][]): String[] => {
   return header.slice(0, headerIndex);
 }
 
+const getVariableFromData = (data: string[][], modes: string[]): string[][] => {
+  return data.slice(1)
+    .filter(row => row[0])
+    .map(row =>
+      Array.from({length: modes.length + 1},
+        (_, i) => (row[i] !== undefined && row[i] !== "") ? row[i] : "")
+    );
+}
+
 const removeModes = (collection: VariableCollection) => {
   while (collection.modes.length > 1) {
     collection.removeMode(collection.modes[0].modeId);
   }
 }
 
-const createModes = (collection: VariableCollection, modes: String[]) => {
+const createModes = (collection: VariableCollection, modes: string[]) => {
   const existModeId = collection.modes[0].modeId;
-  collection.renameMode(existModeId, modes[0].toString())
+  collection.renameMode(existModeId, modes[0])
   modes.slice(1).map((mode) => {
     collection.addMode(mode.toString());
   });
 }
 
-const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<String[][]>> => {
+const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<string[][]>> => {
   const baseUrl = "http://127.0.0.1:3000"
   const encodeSheetUrl = encodeURIComponent(sheetUrl)
   const encodeSheetName = encodeURIComponent(sheetName)
