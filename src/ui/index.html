@@ -2,14 +2,37 @@
     <h1>plugin</h1>
     <div>
         <label for="input-sheetUrl">url</label>
-        <input id="input-sheetUrl" type="text">
+        <input id="input-sheetUrl" type="text" value="">
     </div>
     <div>
         <label for="input-sheetName">sheetName</label>
-        <input id="input-sheetNAme" type="text">
+        <input id="input-sheetName" type="text" value="">
     </div>
 
-    <button>
+    <button class="button-run">
         <p>RUN</p>
     </button>
 </main>
+
+<script>
+  const inputSheetUrl = document.getElementById('input-sheetUrl');
+  const inputSheetName = document.getElementById('input-sheetName');
+  const button = document.querySelector('.button-run');
+
+  inputSheetName.addEventListener('change', (event) => {
+    inputSheetName.value = event.target.value;
+  });
+
+  inputSheetUrl.addEventListener('change', (event) => {
+    inputSheetUrl.value = event.target.value;
+  });
+
+  button.addEventListener('click', () => {
+    const sheetUrl = inputSheetUrl.value;
+    const sheetName = inputSheetName.value;
+
+    if (sheetUrl && sheetName) {
+      parent.postMessage({pluginMessage: {type: 'run', sheetUrl, sheetName}}, '*');
+    }
+  });
+</script>
