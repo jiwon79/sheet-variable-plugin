@@ -72,18 +72,46 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
     return;
   }
 
-  console.log(modes);
   removeModes(collection);
-  createModes(collection, modes);
-  const variables = getVariableFromData(data, modes);
-  console.log(variables);
-  // modes.map((mode) => {
-  //   collection.addMode(mode.toString());
-  // })
+  // collection.variableIds.forEach((variableId) => {
+  //   figma.variables.(variableId);
+  // }
+  const modeIds = createModes(collection, modes);
+  console.log("modeIds : ", modeIds);
+  const rawVariables = getVariableFromData(data, modes);
+  console.log(rawVariables);
+  rawVariables.forEach((variableByModes) => {
+    console.log(variableByModes);
+    const name = variableByModes[0];
+    const variable = getVariableAndCreateIfNotExist(collection, name);
+
+    modeIds.forEach((modeId, index) => {
+      variable.setValueForMode(modeId, variableByModes[index + 1]);
+    })
+  });
 
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:sheetUrl`, sheetUrl);
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:sheetName`, sheetName);
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:collectionName`, collectionName);
+}
+
+const searchVariableByName = (collection: VariableCollection, name: string): Variable | null => {
+  const variables = collection.variableIds.map((variableId) => figma.variables.getVariableById(variableId))
+  const variable = variables.find((variable) => {
+    if (variable === null) return false;
+    return variable.name === name;
+  });
+
+  return variable === undefined ? null : variable;
+}
+
+const getVariableAndCreateIfNotExist = (collection: VariableCollection, name: string): Variable => {
+  const variable = searchVariableByName(collection, name);
+  if (variable === null) {
+    return figma.variables.createVariable(name, collection.id, 'STRING');
+  }
+
+  return variable;
 }
 
 const getModesFromData = (data: string[][]): string[] => {
@@ -111,12 +139,14 @@ const removeModes = (collection: VariableCollection) => {
   }
 }
 
-const createModes = (collection: VariableCollection, modes: string[]) => {
+const createModes = (collection: VariableCollection, modes: string[]): string[] => {
   const existModeId = collection.modes[0].modeId;
   collection.renameMode(existModeId, modes[0])
-  modes.slice(1).map((mode) => {
-    collection.addMode(mode.toString());
+  const newModeIds = modes.slice(1).map((mode) => {
+    return collection.addMode(mode.toString());
   });
+
+  return [existModeId, ...newModeIds];
 }
 
 const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<string[][]>> => {
