@@ -1,20 +1,18 @@
 import { defineConfig } from "vite";
-import path from "path";
 
 import { viteSingleFile } from "vite-plugin-singlefile";
 
 import postcssUrl from "postcss-url";
-const __dirname = path.resolve();
+import { relative, resolve } from "path";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [viteSingleFile()],
-  root: path.resolve(__dirname, "./src/ui/"),
+  root: resolve(__dirname, "./src/ui/"),
   build: {
-    outDir: path.resolve(__dirname, "./dist"),
+    outDir: resolve(__dirname, "./dist"),
     rollupOptions: {
       input: {
-        ui: path.relative(__dirname, "./src/ui/index.html"),
+        ui: relative(__dirname, "./src/ui/index.html"),
       },
       output: {
         entryFileNames: "[name].js",
@@ -28,7 +26,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@ui": path.resolve(__dirname, "./src/ui"),
+      "@ui": resolve(__dirname, "./src/ui"),
     },
   },
 });
