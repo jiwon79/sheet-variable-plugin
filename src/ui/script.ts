@@ -11,10 +11,27 @@ if (!(inputSheetName instanceof HTMLInputElement) || !(inputSheetUrl instanceof 
   throw new Error('element is not HTMLInputElement');
 }
 
-inputSheetName.onchange = (event) => {
-  if (!(event.target instanceof HTMLInputElement)) return;
+onmessage = (event: MessageEvent) => {
+  const eventType = event.data.pluginMessage.type;
+  if (eventType === "load") {
+    const sheetUrl = event.data.pluginMessage.sheetUrl;
+    const sheetName = event.data.pluginMessage.sheetName;
+    const collectionName = event.data.pluginMessage.collectionName;
+    console.log("load - client")
+    console.log(sheetUrl)
+    console.log(sheetName)
+    console.log(collectionName)
 
-  inputSheetName.value = event.target.value;
+    if (sheetUrl !== undefined) {
+      inputSheetUrl.value = sheetUrl;
+    }
+    if (sheetName !== undefined) {
+      inputSheetName.value = sheetName;
+    }
+    if (collectionName !== undefined) {
+      inputCollectionName.value = collectionName;
+    }
+  }
 }
 
 inputSheetUrl.onchange = (event) => {
