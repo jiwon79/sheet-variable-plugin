@@ -73,6 +73,8 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
   }
 
   console.log(modes);
+  removeModes(collection);
+  createModes(collection, modes);
   // modes.map((mode) => {
   //   collection.addMode(mode.toString());
   // })
@@ -90,6 +92,20 @@ const getModesFromData = (data: String[][]): String[] => {
   }
 
   return header.slice(0, headerIndex);
+}
+
+const removeModes = (collection: VariableCollection) => {
+  while (collection.modes.length > 1) {
+    collection.removeMode(collection.modes[0].modeId);
+  }
+}
+
+const createModes = (collection: VariableCollection, modes: String[]) => {
+  const existModeId = collection.modes[0].modeId;
+  collection.renameMode(existModeId, modes[0].toString())
+  modes.slice(1).map((mode) => {
+    collection.addMode(mode.toString());
+  });
 }
 
 const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<String[][]>> => {
