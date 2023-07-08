@@ -8,6 +8,10 @@
         <label for="input-sheetName">sheetName</label>
         <input id="input-sheetName" type="text" value="">
     </div>
+    <div>
+        <label for="input-collectionName">collection name</label>
+        <input id="input-collectionName" type="text" value="">
+    </div>
 
     <button class="button-run">
         <p>RUN</p>
@@ -17,6 +21,7 @@
 <script>
   const inputSheetUrl = document.getElementById('input-sheetUrl');
   const inputSheetName = document.getElementById('input-sheetName');
+  const inputCollectionName = document.getElementById('input-collectionName');
   const button = document.querySelector('.button-run');
 
   inputSheetName.addEventListener('change', (event) => {
@@ -27,12 +32,17 @@
     inputSheetUrl.value = event.target.value;
   });
 
+    inputCollectionName.addEventListener('change', (event) => {
+        inputCollectionName.value = event.target.value;
+    });
+
   button.addEventListener('click', () => {
     const sheetUrl = inputSheetUrl.value;
     const sheetName = inputSheetName.value;
+    const collectionName = inputCollectionName.value;
 
     if (sheetUrl && sheetName) {
-      parent.postMessage({pluginMessage: {type: 'run', sheetUrl, sheetName}}, '*');
+      parent.postMessage({pluginMessage: {type: 'run', sheetUrl, sheetName, collectionName}}, '*');
     }
   });
 </script>
