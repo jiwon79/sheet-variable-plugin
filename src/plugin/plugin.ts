@@ -66,9 +66,30 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
     return;
   }
 
+  const modes = getModesFromData(data);
+  if (modes.length === 0) {
+    figma.notify("modes is empty");
+    return;
+  }
+
+  console.log(modes);
+  // modes.map((mode) => {
+  //   collection.addMode(mode.toString());
+  // })
+
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:sheetUrl`, sheetUrl);
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:sheetName`, sheetName);
   await figma.clientStorage.setAsync(`${figma.currentPage.id}:collectionName`, collectionName);
+}
+
+const getModesFromData = (data: String[][]): String[] => {
+  const header = data[0].slice(1);
+  const headerIndex = header.findIndex((value) => value === "");
+  if (headerIndex === -1) {
+    return header;
+  }
+
+  return header.slice(0, headerIndex);
 }
 
 const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<String[][]>> => {
