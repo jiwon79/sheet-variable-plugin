@@ -150,7 +150,7 @@ const createModes = (collection: VariableCollection, modes: string[]): string[] 
 }
 
 const fetchSheet = async (sheetUrl: string, sheetName: string): Promise<Result<string[][]>> => {
-  const baseUrl = "http://127.0.0.1:3000"
+  const baseUrl = "https://figma-plugin-server.vercel.app"
   const encodeSheetUrl = encodeURIComponent(sheetUrl)
   const encodeSheetName = encodeURIComponent(sheetName)
   const query = `?sheetUrl=${encodeSheetUrl}&sheetName=${encodeSheetName}`
