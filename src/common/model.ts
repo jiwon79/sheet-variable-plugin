@@ -10,6 +10,10 @@ class Result<T> {
   get isSuccess(): boolean {
     return this.success;
   }
+
+  get isFail(): boolean {
+    return !this.success;
+  }
 }
 
 class Success<T> extends Result<T> {
