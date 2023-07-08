@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="./style.css">
 <main>
     <h1>plugin</h1>
     <div>
@@ -18,31 +19,4 @@
     </button>
 </main>
 
-<script>
-  const inputSheetUrl = document.getElementById('input-sheetUrl');
-  const inputSheetName = document.getElementById('input-sheetName');
-  const inputCollectionName = document.getElementById('input-collectionName');
-  const button = document.querySelector('.button-run');
-
-  inputSheetName.addEventListener('change', (event) => {
-    inputSheetName.value = event.target.value;
-  });
-
-  inputSheetUrl.addEventListener('change', (event) => {
-    inputSheetUrl.value = event.target.value;
-  });
-
-    inputCollectionName.addEventListener('change', (event) => {
-        inputCollectionName.value = event.target.value;
-    });
-
-  button.addEventListener('click', () => {
-    const sheetUrl = inputSheetUrl.value;
-    const sheetName = inputSheetName.value;
-    const collectionName = inputCollectionName.value;
-
-    if (sheetUrl && sheetName) {
-      parent.postMessage({pluginMessage: {type: 'run', sheetUrl, sheetName, collectionName}}, '*');
-    }
-  });
-</script>
+<script src="./script.ts" type="module"></script>
