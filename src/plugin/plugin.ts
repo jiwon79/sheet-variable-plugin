@@ -114,7 +114,7 @@ const getVariableAndCreateIfNotExist = (collection: VariableCollection, name: st
   return variable;
 }
 
-const getModesFromData = (data: string[][]): string[] => {
+export const getModesFromData = (data: string[][]): string[] => {
   const header = data[0].slice(1);
   const headerIndex = header.findIndex((value) => value === "");
   if (headerIndex === -1) {
