@@ -1,4 +1,5 @@
 import { Fail, Result, Success } from "../common/model.ts";
+import VariableService from "../service/variableService.ts";
 
 figma.showUI(__html__, {width: 300, height: 200});
 
@@ -61,12 +62,13 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
   }
 
   const data = response.data;
-  if (data === null) {
-    figma.notify("data is null");
+  console.log("data : ", data)
+  if (!VariableService.isValidData(data)) {
+    figma.notify("data is invalid");
     return;
   }
 
-  const modes = getModesFromData(data);
+  const modes = getModesFromData(data!);
   if (modes.length === 0) {
     figma.notify("modes is empty");
     return;
@@ -78,7 +80,7 @@ const run = async (sheetUrl: string, sheetName: string, collectionName: string) 
   // }
   const modeIds = createModes(collection, modes);
   console.log("modeIds : ", modeIds);
-  const rawVariables = getVariableFromData(data, modes);
+  const rawVariables = getVariableFromData(data!, modes);
   console.log(rawVariables);
   rawVariables.forEach((variableByModes) => {
     console.log(variableByModes);
@@ -114,7 +116,7 @@ const getVariableAndCreateIfNotExist = (collection: VariableCollection, name: st
   return variable;
 }
 
-export const getModesFromData = (data: string[][]): string[] => {
+const getModesFromData = (data: string[][]): string[] => {
   const header = data[0].slice(1);
   const headerIndex = header.findIndex((value) => value === "");
   if (headerIndex === -1) {
