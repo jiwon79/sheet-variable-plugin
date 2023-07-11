@@ -22,7 +22,7 @@ class VariableService {
   }
 
   // first row is mode names
-  // Except for the first box, the name of the mode is until the blank comes out
+  // Except for the first cell, the name of the mode is until the blank comes out
   public static getModeNamesFromFirstRow(firstRow: string[]): string[] {
     const modeNames = firstRow.slice(1);
     const blankIndex = modeNames.findIndex((value) => value === "");
